@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Items by Admin</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            padding: 20px;
+            display: grid;
+            gap: 16px;
+            align-content: start;
+        }
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input, textarea, button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* Custom styling for file input */
+        #customFileInput {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        #customFileInput input[type="file"] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            filter: alpha(opacity=0); /* For IE8 and earlier */
+        }
+
+        #customFileInputLabel {
+            display: inline-block;
+            background-color: #c7803f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #c7803f;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c7803f;
+        }
+
+        #itemList {
+            list-style-type: none;
+            padding: 20px;
+            margin: 0;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .item {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .item img {
+            max-width: 100px;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add Items by Admin</h2>
+
+    <div id="container">
+        <form id="addItemForm">
+            <label for="itemName">Item Name:</label>
+            <input type="text" id="itemName" required>
+            <label for="itemPrice">Item Price:</label>
+            <input type="number" id="itemPrice" required>
+            <label for="itemDescription">Item Description:</label>
+            <textarea id="itemDescription" rows="4" required></textarea>
+            <label for="itemPhoto">Item Photo:</label>
+            <div id="customFileInput">
+                <label id="customFileInputLabel" for="itemPhoto">Choose File</label>
+                <input type="file" id="itemPhoto" accept="image/*">
+            </div>
+            <button type="button" onclick="addItem()">Add Item</button>
+        </form>
+
+        <ul id="itemList"></ul>
+    </div>
+
+    <script>
+        function addItem() {
+            var itemName = document.getElementById('itemName').value;
+            var itemPrice = document.getElementById('itemPrice').value;
+            var itemDescription = document.getElementById('itemDescription').value;
+            var itemPhoto = document.getElementById('itemPhoto').files[0];
+
+            if (itemName.trim() === '' || itemPrice.trim() === '' || itemDescription.trim() === '') {
+                alert('Please enter item name, price, and description');
+                return;
+            }
+
+            var newItem = document.createElement('li');
+            newItem.className = 'item';
+            newItem.innerHTML = `<img src="${itemPhoto ? URL.createObjectURL(itemPhoto) : ''}" alt="${itemName}" class="item-photo">
+                                <div>
+                                    <strong>${itemName}</strong> - $${itemPrice}<br>${itemDescription}
+                                </div>`;
+
+            document.getElementById('itemList').appendChild(newItem);
+
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemDescription').value = '';
+            document.getElementById('itemPhoto').value = null; // Clear the file input
+        }
+    </script>
+
+</body>
+</html>
